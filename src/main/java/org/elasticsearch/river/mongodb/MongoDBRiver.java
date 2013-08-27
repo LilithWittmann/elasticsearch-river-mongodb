@@ -214,19 +214,23 @@ public class MongoDBRiver extends AbstractRiverComponent implements River {
 		} catch (Exception e) {
 			if (ExceptionsHelper.unwrapCause(e) instanceof IndexAlreadyExistsException) {
 				// that's fine
+				logger.warn("index alredy exsists");
 			} else if (ExceptionsHelper.unwrapCause(e) instanceof ClusterBlockException) {
 				// ok, not recovered yet..., lets start indexing and hope we
 				// recover by the first bulk
 				// TODO: a smarter logic can be to register for cluster event
 				// listener here, and only start sampling when the
 				// block is removed...
+				logger.warn("ok, not recovered yet..., lets start indexing and hope we");
 			} else {
 				logger.warn("failed to create index [{}], disabling river...",
 						e, definition.getIndexName());
 				return;
 			}
 		}
-
+		logger.warn("index created");
+		
+		
 		if (definition.isMongoGridFS()) {
 			try {
 				if (logger.isDebugEnabled()) {
